@@ -61,6 +61,7 @@ async function handleRegister() {
         try {
             await contract.registerProduct.estimateGas(productId, name);
             console.log("✅ Có thể gửi giao dịch.");
+            $('#loading-text-status').text('Đang xử lý giao dịch...');
             $('body').addClass('is-loading');
         } catch (err) {
             console.error("❌ Không thể gửi giao dịch:", err);
@@ -71,10 +72,10 @@ async function handleRegister() {
 
         const tx = await contract.registerProduct(productId, name);
         console.log("📤 Gửi giao dịch:", tx);
+        $('#loading-text-status').text('Giao dịch đã được gửi, đang chờ xác nhận...');
         const receipt = await tx.wait();
         console.log("✅ Giao dịch hoàn tất:", receipt);
-
-        alert("✅ Đăng ký sản phẩm thành công!");
+        $('#loading-text-status').text('Giao dịch hoàn tất!');
         $('form.form-edit-add').submit();
     } catch (err) {
         console.error("❌ Lỗi tổng:", err);
@@ -146,8 +147,6 @@ async function handleAddStage() {
 
         $('.remove-attribute-name input, .remove-attribute-name textarea').removeAttr('name');
         $("input[name='stage_data']").val(jsonData);
-
-        alert("✅ Thêm giai đoạn thành công!");
 
         $('#addStageForm').submit();
 

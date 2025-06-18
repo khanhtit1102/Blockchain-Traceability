@@ -121,6 +121,8 @@ return [
 
     'key' => env('APP_KEY'),
 
+    'trace_secret_key' => env('TRACE_SECRET_KEY', 'default_trace_secret_key'),
+
     'cipher' => 'AES-256-CBC',
 
     /*

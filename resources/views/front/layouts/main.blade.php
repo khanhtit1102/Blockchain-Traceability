@@ -23,6 +23,19 @@
 
     <!-- Lightbox2 CSS - Thư viện phóng to ảnh -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ setting('site.google_analytics_tracking_id') }}">
+    </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', '{{ setting('site.google_analytics_tracking_id') }}');
+    </script>
     <style>
         :root {
             --primary-color: #006837;
@@ -259,10 +272,11 @@
                     <li class="nav-item"><a class="nav-link" href="#">Nhà Sản Xuất</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Liên Hệ</a></li>
                 </ul>
-                <form id="trace-form-header" class="d-lg-flex search-form-header">
+                <form id="trace-form-header" class="d-lg-flex search-form-header" action="{{ route('search') }}" method="POST">
+                    @csrf
                     <div class="input-group">
-                        <input id="trace-input-header" class="form-control" type="search"
-                            placeholder="Nhập mã truy xuất...">
+                        <input id="trace-input-header" class="form-control" name="trace_code" type="search"
+                            placeholder="Nhập mã truy xuất..." required>
                         <button class="btn btn-scan-header" type="button" data-bs-toggle="modal"
                             data-bs-target="#qrScannerModal">
                             <i class="fa-solid fa-camera"></i>
@@ -317,7 +331,7 @@
             </div>
             <hr class="my-3">
             <div class="text-center">
-                <p>&copy; 2025 - Bản quyền thuộc về Dự án Thạc sĩ Khoa học Máy tính. All Rights Reserved.</p>
+                <p>&copy; 2025. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
@@ -363,16 +377,16 @@
 
             // Handle form submissions
             $('#trace-form-hero, #trace-form-header').on('submit', function(event) {
-                event.preventDefault();
-                const $input = $(this).find('input[type="search"]');
-                const code = $input.val().trim();
+                // event.preventDefault();
+                // const $input = $(this).find('input[type="search"]');
+                // const code = $input.val().trim();
 
-                if (code) {
-                    const traceUrl = traceRoute.replace('000000', code);
-                    window.open(traceUrl, '_new');
-                } else {
-                    alert("Vui lòng nhập mã sản phẩm để truy xuất.");
-                }
+                // if (code) {
+                //     const traceUrl = traceRoute.replace('000000', code);
+                //     window.open(traceUrl, '_new');
+                // } else {
+                //     alert("Vui lòng nhập mã sản phẩm để truy xuất.");
+                // }
             });
 
             // Set the active input field when a scan button is clicked

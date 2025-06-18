@@ -282,6 +282,11 @@
         .lightbox .lb-data .lb-caption {
             font-family: 'Be Vietnam Pro', sans-serif;
         }
+
+        .tab-pane img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 @endsection
 
@@ -323,7 +328,7 @@
     <!-- ========= TABS CONTAINER ========= -->
     <section class="tabs-container" data-aos="fade-up" data-aos-delay="100">
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation"><button class="nav-link" id="product-tab" data-bs-toggle="tab"
+            <li class="nav-item" role="presentation"><button class="nav-link active" id="product-tab" data-bs-toggle="tab"
                     data-bs-target="#product-tab-pane" type="button" role="tab">Sản
                     phẩm</button></li>
             <li class="nav-item" role="presentation"><button class="nav-link" id="company-tab" data-bs-toggle="tab"
@@ -332,12 +337,12 @@
             <li class="nav-item" role="presentation"><button class="nav-link" id="certification-tab" data-bs-toggle="tab"
                     data-bs-target="#certification-tab-pane" type="button" role="tab">Chứng
                     nhận</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link active" id="traceability-tab"
-                    data-bs-toggle="tab" data-bs-target="#traceability-tab-pane" type="button" role="tab">Lịch sử
+            <li class="nav-item" role="presentation"><button class="nav-link" id="traceability-tab" data-bs-toggle="tab"
+                    data-bs-target="#traceability-tab-pane" type="button" role="tab">Lịch sử
                     sản phẩm</button></li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade p-3" id="product-tab-pane" role="tabpanel">
+            <div class="tab-pane fade p-3 show active" id="product-tab-pane" role="tabpanel">
                 {!! $product->description !!}
             </div>
             <div class="tab-pane fade p-3" id="company-tab-pane" role="tabpanel">
@@ -380,7 +385,7 @@
             <div class="tab-pane fade p-3" id="certification-tab-pane" role="tabpanel">
                 {!! $product->certification_content !!}
             </div>
-            <div class="tab-pane fade show active" id="traceability-tab-pane" role="tabpanel">
+            <div class="tab-pane fade" id="traceability-tab-pane" role="tabpanel">
                 <ul class="timeline" id="timeline-front">
 
                 </ul>
@@ -428,6 +433,23 @@
 
 @section('js')
     <script>
+        // Hàm thay đổi ảnh chính
+        function changeImage(element) {
+            const mainImage = $('#mainProductImage');
+            const mainImageLink = mainImage.parent();
+
+            // Lấy src của ảnh được click (ảnh thumbnail)
+            const newImageSrc = $(element).attr('src');
+
+            // Tạo URL mới cho ảnh chính và lightbox có độ phân giải cao hơn
+            const highResSrc = newImageSrc.replace('/100/100', '/800/600');
+
+            mainImage.attr('src', highResSrc);
+            mainImageLink.attr('href', highResSrc);
+
+            $('.product-gallery img').removeClass('active');
+            $(element).addClass('active');
+        }
         $(document).ready(function() {
             // Khởi tạo các thư viện
             AOS.init({
@@ -440,23 +462,7 @@
                 'albumLabel': "Ảnh %1 / %2"
             });
 
-            // Hàm thay đổi ảnh chính
-            function changeImage(element) {
-                const mainImage = $('#mainProductImage');
-                const mainImageLink = mainImage.parent();
 
-                // Lấy src của ảnh được click (ảnh thumbnail)
-                const newImageSrc = $(element).attr('src');
-
-                // Tạo URL mới cho ảnh chính và lightbox có độ phân giải cao hơn
-                const highResSrc = newImageSrc.replace('/100/100', '/800/600');
-
-                mainImage.attr('src', highResSrc);
-                mainImageLink.attr('href', highResSrc);
-
-                $('.product-gallery img').removeClass('active');
-                $(element).addClass('active');
-            }
 
             // Xử lý sự kiện cho Modal Blockchain
             const blockchainModal = $('#blockchainModal');

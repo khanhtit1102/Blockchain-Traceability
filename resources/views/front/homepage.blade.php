@@ -226,10 +226,11 @@
         <div class="container" data-aos="fade-up">
             <h1 class="display-3">TINH HOA CHÈ THÁI NGUYÊN</h1>
             <p class="lead">Minh bạch trong từng búp trà. Truy xuất nguồn gốc bằng công nghệ Blockchain.</p>
-            <form id="trace-form-hero" class="trace-form" role="search">
+            <form id="trace-form-hero" class="trace-form" role="search" action="{{ route('search') }}" method="POST">
+                @csrf
                 <div class="input-group">
-                    <input id="trace-input-hero" class="form-control" type="search"
-                        placeholder="Nhập mã sản phẩm hoặc quét QR...">
+                    <input id="trace-input-hero" class="form-control" name="trace_code" type="search"
+                        placeholder="Nhập mã sản phẩm hoặc quét QR..." required>
                     <button class="btn btn-scan" type="button" data-bs-toggle="modal" data-bs-target="#qrScannerModal">
                         <i class="fa-solid fa-camera"></i>
                     </button>
