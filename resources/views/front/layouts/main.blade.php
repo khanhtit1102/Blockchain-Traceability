@@ -4,7 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Truy Xuất Nguồn Gốc - Chè Thái Nguyên</title>
+    <title>{{ $pageMeta['title'] ?? setting('site.title') }}</title>
+    <meta name="description" content="{{ $pageMeta['description'] ?? setting('site.description') }}">
+    <meta name="keywords" content="{{ $pageMeta['keywords'] ?? setting('site.keywords') }}">
+    <meta property="og:title" content="{{ $pageMeta['title'] ?? setting('site.title') }}">
+    <meta property="og:description" content="{{ $pageMeta['description'] ?? setting('site.description') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ $pageMeta['image'] ?? setting('site.logo') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageMeta['title'] ?? setting('site.title') }}">
+    <meta name="twitter:description" content="{{ $pageMeta['description'] ?? setting('site.description') }}">
+    <meta name="twitter:image" content="{{ $pageMeta['image'] ?? setting('site.logo') }}">
 
     <!-- Google Fonts: Be Vietnam Pro -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,9 +50,7 @@
     <style>
         :root {
             --primary-color: #006837;
-            /* Green from tea leaves */
             --secondary-color: #B9936C;
-            /* Gold/Brown for dried tea */
             --text-color: #333;
             --light-bg: #f8f9fa;
             --white-color: #fff;
@@ -50,6 +59,8 @@
             --success-color: #4CAF50;
             --dark-text: #263238;
             --light-text: #555;
+            --warning-color: #FFA726;
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, .07);
         }
 
         body {
@@ -67,7 +78,7 @@
         }
 
         .navbar-brand img {
-            height: 45px;
+            height: 60px;
         }
 
         .navbar .nav-link {
@@ -131,81 +142,7 @@
         }
 
 
-        /* ========= HERO SECTION ========= */
-        .hero-section {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1597910037242-3535de99436c?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            padding: 120px 0;
-            color: var(--white-color);
-            text-align: center;
-        }
 
-        .hero-section h1 {
-            font-weight: 900;
-            font-size: 4rem;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-        }
-
-        .hero-section .lead {
-            font-size: 1.5rem;
-            font-weight: 300;
-            margin-bottom: 30px;
-        }
-
-        .hero-section .trace-form .input-group {
-            max-width: 600px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            padding: 0.5rem;
-            backdrop-filter: blur(5px);
-        }
-
-        .hero-section .trace-form .form-control,
-        .hero-section .trace-form .btn {
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            color: white;
-        }
-
-        .hero-section .trace-form .form-control {
-            font-size: 1.1rem;
-            padding-left: 1rem;
-        }
-
-        .hero-section .trace-form .form-control:focus {
-            background: transparent;
-            color: white;
-        }
-
-        .hero-section .trace-form .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .hero-section .trace-form .btn-scan {
-            font-size: 1.2rem;
-            padding: 0 1rem;
-        }
-
-        .hero-section .trace-form .btn-scan:hover {
-            color: var(--secondary-color);
-        }
-
-        .hero-section .trace-form .btn-trace {
-            background-color: var(--secondary-color);
-            border-radius: 50px !important;
-            padding: 10px 30px;
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-
-        .hero-section .btn-trace:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
 
         /* ========= FOOTER ========= */
         footer {
@@ -251,6 +188,11 @@
                 font-size: 3rem;
             }
         }
+
+        main.container {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
     </style>
     @yield('css')
 </head>
@@ -260,19 +202,14 @@
     <!-- ========= NAVBAR ========= -->
     <header class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="#"><img src="https://placehold.co/120x40/006837/FFFFFF?text=CheViet"
+            <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ Voyager::image(setting('site.logo')) }}"
                     alt="Logo Chè Việt"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span
                     class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Trang Chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Sản Phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Câu Chuyện</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Nhà Sản Xuất</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Liên Hệ</a></li>
-                </ul>
-                <form id="trace-form-header" class="d-lg-flex search-form-header" action="{{ route('search') }}" method="POST">
+                {{ menu('front.header', 'menus.header-menu') }}
+                <form id="trace-form-header" class="d-lg-flex search-form-header" action="{{ route('search') }}"
+                    method="POST">
                     @csrf
                     <div class="input-group">
                         <input id="trace-input-header" class="form-control" name="trace_code" type="search"
@@ -289,9 +226,7 @@
         </div>
     </header>
 
-    <main class="container">
-        @yield('content')
-    </main>
+    @yield('content')
 
     <!-- ========= FOOTER ========= -->
     <footer class="pt-5 pb-4">

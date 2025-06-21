@@ -17,8 +17,16 @@ use TCG\Voyager\Facades\Voyager;
 Route::get('/', 'App\Http\Controllers\Front\HomeController@index')->name('home');
 
 Route::get('/trace/{trace_code}', 'App\Http\Controllers\Front\HomeController@trace')->name('trace');
+Route::get('/cooperate', 'App\Http\Controllers\Front\HomeController@cooperate')->name('cooperate');
 Route::post('/search', 'App\Http\Controllers\Front\HomeController@search')->name('search');
 Route::get('/download-qr/{trace_code}', 'App\Http\Controllers\Front\HomeController@downloadQR')->name('download.qr');
+
+
+// Route for posts
+Route::get('/posts', 'App\Http\Controllers\Front\PostController@index')->name('posts.index');
+Route::get('/posts/{slug}', 'App\Http\Controllers\Front\PostController@show')->name('posts.show');
+
+
 
 // API
 Route::get('api/stages', 'App\Http\Controllers\Api\StageController@index')

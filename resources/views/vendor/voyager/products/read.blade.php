@@ -83,7 +83,9 @@
                     <div class="row">
                         <div class="col-md-6" style="display: flex; justify-content: center">
                             <div class="img-thumbnail" id="qrcode">
-                                {!! QrCode::generate(route('trace', $trace_code)) !!}
+                                {!! QrCode::generate(
+                                    route('trace', $trace_code) . '?secret=' . hash_hmac('sha256', $trace_code, config('app.trace_secret_key')),
+                                ) !!}
                             </div>
                             <input type="hidden" name="" id="trace_code" value="{{ $trace_code }}">
                         </div>

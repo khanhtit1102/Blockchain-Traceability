@@ -287,148 +287,206 @@
             max-width: 100%;
             height: auto;
         }
+
+        /* --- Security Warning Modal --- */
+        #securityWarningModal .modal-content {
+            border-color: var(--warning-color);
+            border-width: 3px;
+        }
+
+        #securityWarningModal .modal-header {
+            background-color: var(--warning-color);
+            color: var(--dark-text);
+            border-bottom-width: 0;
+        }
+
+        #securityWarningModal .btn-warning {
+            background-color: var(--warning-color);
+            border-color: var(--warning-color);
+            color: var(--dark-text);
+            font-weight: 500;
+        }
     </style>
 @endsection
 
 @section('content')
-    <!-- ========= PRODUCT HEADER ========= -->
-    <section class="product-header" data-aos="fade-up">
-        <div class="row align-items-center">
-            <div class="col-lg-5 text-center">
-                <a href="{{ Voyager::image($product->avatar) }}" data-lightbox="product-main"
-                    data-title="{{ $product->name ?? '' }}"><img id="mainProductImage"
-                        src="{{ Voyager::image($product->avatar) }}" alt="Chè Thái Nguyên" class="product-main-image"></a>
-                <div class="d-flex justify-content-center gap-2 product-gallery mt-3">
-                    @if ($product->avatar)
-                        <img src="{{ Voyager::image($product->avatar) }}" alt="{{ $product->name ?? '' }}" class="active"
-                            onclick="changeImage(this)">
+    <main class="container">
+        <!-- ========= PRODUCT HEADER ========= -->
+        <section class="product-header" data-aos="fade-up">
+            <div class="row align-items-center">
+                <div class="col-lg-5 text-center">
+                    <a href="{{ Voyager::image($product->avatar) }}" data-lightbox="product-main"
+                        data-title="{{ $product->name ?? '' }}"><img id="mainProductImage"
+                            src="{{ Voyager::image($product->avatar) }}" alt="Chè Thái Nguyên"
+                            class="product-main-image"></a>
+                    <div class="d-flex justify-content-center gap-2 product-gallery mt-3">
+                        @if ($product->avatar)
+                            <img src="{{ Voyager::image($product->avatar) }}" alt="{{ $product->name ?? '' }}"
+                                class="active" onclick="changeImage(this)">
+                        @endif
+                        @if ($product->images)
+                            @php
+                                $images = json_decode($product->images, true);
+                            @endphp
+                            @foreach ($images as $image)
+                                <img src="{{ Voyager::image($image) }}" alt="{{ $product->name ?? '' }}"
+                                    onclick="changeImage(this)">
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+                <div class="col-lg-7 product-info">
+                    <h1 class="mt-4 mt-lg-0">{{ $product->name ?? '' }}</h1>
+                    @if ($isAuthenticated)
+                        <div class="form-row mr-0 ml-0 d-flex align-items-center mt-3"><span
+                                class="text-white bg-success badge badge-secondary">Sản phẩm chính hãng</span></div>
                     @endif
-                    @if ($product->images)
-                        @php
-                            $images = json_decode($product->images, true);
-                        @endphp
-                        @foreach ($images as $image)
-                            <img src="{{ Voyager::image($image) }}" alt="{{ $product->name ?? '' }}"
-                                onclick="changeImage(this)">
-                        @endforeach
-                    @endif
+                    <p class="lead text-muted">{!! $product->short_description !!}</p>
+                    <div><span class="trace-code">Trace Code: {{ $product->trace_code ?? '' }}</span></div>
+                    <input type="hidden" id="trace_code" value="{{ $product->trace_code ?? '' }}">
+                    <p class="mt-3"><i class="fa-regular fa-calendar-check me-2"></i><strong>Ngày tạo:</strong>
+                        {{ $product->created_at ?? '' }}</p>
+                    <p>{!! $product->excerpt !!}</p>
                 </div>
             </div>
-            <div class="col-lg-7 product-info">
-                <h1 class="mt-4 mt-lg-0">{{ $product->name ?? '' }}</h1>
-                <p class="lead text-muted">{!! $product->short_description !!}</p>
-                <div><span class="trace-code">Trace Code: {{ $product->trace_code ?? '' }}</span></div>
-                <input type="hidden" id="trace_code" value="{{ $product->trace_code ?? '' }}">
-                <p class="mt-3"><i class="fa-regular fa-calendar-check me-2"></i><strong>Ngày tạo:</strong>
-                    {{ $product->created_at ?? '' }}</p>
-                <p>{!! $product->excerpt !!}</p>
-            </div>
-        </div>
-    </section>
-    <!-- ========= TABS CONTAINER ========= -->
-    <section class="tabs-container" data-aos="fade-up" data-aos-delay="100">
-        <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation"><button class="nav-link active" id="product-tab" data-bs-toggle="tab"
-                    data-bs-target="#product-tab-pane" type="button" role="tab">Sản
-                    phẩm</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" id="company-tab" data-bs-toggle="tab"
-                    data-bs-target="#company-tab-pane" type="button" role="tab">Nhà
-                    sản xuất</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" id="certification-tab" data-bs-toggle="tab"
-                    data-bs-target="#certification-tab-pane" type="button" role="tab">Chứng
-                    nhận</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" id="traceability-tab" data-bs-toggle="tab"
-                    data-bs-target="#traceability-tab-pane" type="button" role="tab">Lịch sử
-                    sản phẩm</button></li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade p-3 show active" id="product-tab-pane" role="tabpanel">
-                {!! $product->description !!}
-            </div>
-            <div class="tab-pane fade p-3" id="company-tab-pane" role="tabpanel">
-                <div class="row align-items-center">
-                    <div class="col-md-4 text-center">
-                        <img src="{{ Voyager::image($product->createdBy ? $product->createdBy->avatar : '') }}"
-                            class="img-fluid rounded-circle mb-3" alt="Logo Công ty">
-                    </div>
-                    <div class="col-md-8">
-                        <h4 class="mb-3" style="color: var(--primary-color);">
-                            {{ $product->createdBy ? $product->createdBy->company_name : '' }}</h4>
-                        <div class="text-muted">
-                            {!! $product->createdBy ? $product->createdBy->description : '' !!}
+        </section>
+        <!-- ========= TABS CONTAINER ========= -->
+        <section class="tabs-container" data-aos="fade-up" data-aos-delay="100">
+            <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation"><button class="nav-link active" id="product-tab"
+                        data-bs-toggle="tab" data-bs-target="#product-tab-pane" type="button" role="tab">Sản
+                        phẩm</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" id="company-tab" data-bs-toggle="tab"
+                        data-bs-target="#company-tab-pane" type="button" role="tab">Nhà
+                        sản xuất</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" id="certification-tab"
+                        data-bs-toggle="tab" data-bs-target="#certification-tab-pane" type="button" role="tab">Chứng
+                        nhận</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" id="traceability-tab" data-bs-toggle="tab"
+                        data-bs-target="#traceability-tab-pane" type="button" role="tab">Lịch sử
+                        sản phẩm</button></li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade p-3 show active" id="product-tab-pane" role="tabpanel">
+                    {!! $product->description !!}
+                </div>
+                <div class="tab-pane fade p-3" id="company-tab-pane" role="tabpanel">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center">
+                            <img src="{{ Voyager::image($product->createdBy ? $product->createdBy->avatar : '') }}"
+                                class="img-fluid rounded-circle mb-3" alt="Logo Công ty">
                         </div>
-                        <hr>
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><i class="fa-solid fa-globe me-2 text-secondary"></i>
-                                <a href="{{ $product->createdBy ? $product->createdBy->website : '' }}"
-                                    class="text-decoration-none"
-                                    style="color: var(--primary-color);">{{ $product->createdBy ? $product->createdBy->website : '' }}</a>
-                            </li>
-                            <li class="mb-2"><i class="fa-solid fa-phone me-2 text-secondary"> </i>
-                                <a href="{{ $product->createdBy ? $product->createdBy->phone : '' }}"
-                                    class="text-decoration-none"
-                                    style="color: var(--primary-color);">{{ $product->createdBy ? $product->createdBy->phone : '' }}</a>
-                            </li>
-                            <li class="mb-2"><i class="fa-solid fa-envelope me-2 text-secondary"></i>
-                                <a href="mailto:{{ $product->createdBy ? $product->createdBy->email : '' }}"
-                                    class="text-decoration-none"
-                                    style="color: var(--primary-color);">{{ $product->createdBy ? $product->createdBy->email : '' }}</a>
-                            </li>
-                            <li class="mb-2"><i class="fa-solid fa-location-dot me-2 text-secondary"></i>
-                                <span
-                                    style="color: var(--primary-color);">{{ $product->createdBy ? $product->createdBy->address : '' }}</span>
-                            </li>
-                        </ul>
+                        <div class="col-md-8">
+                            <h4 class="mb-3" style="color: var(--primary-color);">
+                                {{ $product->createdBy ? $product->createdBy->company_name : '' }}</h4>
+                            <div class="text-muted">
+                                {!! $product->createdBy ? $product->createdBy->description : '' !!}
+                            </div>
+                            <hr>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fa-solid fa-globe me-2 text-secondary"></i>
+                                    <a href="{{ $product->createdBy ? $product->createdBy->website : '' }}"
+                                        class="text-decoration-none"
+                                        style="color: var(--primary-color);">{{ $product->createdBy ? $product->createdBy->website : '' }}</a>
+                                </li>
+                                <li class="mb-2"><i class="fa-solid fa-phone me-2 text-secondary"> </i>
+                                    <a href="{{ $product->createdBy ? $product->createdBy->phone : '' }}"
+                                        class="text-decoration-none"
+                                        style="color: var(--primary-color);">{{ $product->createdBy ? $product->createdBy->phone : '' }}</a>
+                                </li>
+                                <li class="mb-2"><i class="fa-solid fa-envelope me-2 text-secondary"></i>
+                                    <a href="mailto:{{ $product->createdBy ? $product->createdBy->email : '' }}"
+                                        class="text-decoration-none"
+                                        style="color: var(--primary-color);">{{ $product->createdBy ? $product->createdBy->email : '' }}</a>
+                                </li>
+                                <li class="mb-2"><i class="fa-solid fa-location-dot me-2 text-secondary"></i>
+                                    <span
+                                        style="color: var(--primary-color);">{{ $product->createdBy ? $product->createdBy->address : '' }}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="tab-pane fade p-3" id="certification-tab-pane" role="tabpanel">
-                {!! $product->certification_content !!}
-            </div>
-            <div class="tab-pane fade" id="traceability-tab-pane" role="tabpanel">
-                <ul class="timeline" id="timeline-front">
+                <div class="tab-pane fade p-3" id="certification-tab-pane" role="tabpanel">
+                    {!! $product->certification_content !!}
+                </div>
+                <div class="tab-pane fade" id="traceability-tab-pane" role="tabpanel">
+                    <ul class="timeline" id="timeline-front">
 
-                </ul>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- MODAL XÁC MINH GIAO DỊCH -->
+        <div class="modal fade" id="blockchainModal" tabindex="-1" aria-labelledby="blockchainModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="blockchainModalLabel">Xác minh Giao dịch Blockchain</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Hiệu ứng xác minh -->
+                        <div id="verificationAnimation" class="verification-wrapper">
+                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                            </svg>
+                            <p class="mt-2 text-muted">Đang xác minh trên sổ cái...</p>
+                        </div>
+                        <!-- Thông tin Block -->
+                        <div id="blockInfo" class="d-none">
+                            <h5 class="text-success"><i class="fa-solid fa-circle-check"></i> Giao dịch đã được xác thực!
+                            </h5>
+                            <dl class="row mt-3 block-info">
+                                <dt class="col-sm-4">Block Number</dt>
+                                <dd class="col-sm-8" id="modal-block-number"></dd>
+
+                                <dt class="col-sm-4">Timestamp</dt>
+                                <dd class="col-sm-8" id="modal-timestamp"></dd>
+
+                                <dt class="col-sm-4">Transaction Hash</dt>
+                                <dd class="col-sm-8" id="modal-tx-hash"></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-    <!-- MODAL XÁC MINH GIAO DỊCH -->
-    <div class="modal fade" id="blockchainModal" tabindex="-1" aria-labelledby="blockchainModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="blockchainModalLabel">Xác minh Giao dịch Blockchain</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Hiệu ứng xác minh -->
-                    <div id="verificationAnimation" class="verification-wrapper">
-                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-                        </svg>
-                        <p class="mt-2 text-muted">Đang xác minh trên sổ cái...</p>
-                    </div>
-                    <!-- Thông tin Block -->
-                    <div id="blockInfo" class="d-none">
-                        <h5 class="text-success"><i class="fa-solid fa-circle-check"></i> Giao dịch đã được xác thực!
+        <div class="modal fade" id="securityWarningModal" tabindex="-1" aria-labelledby="securityWarningModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="securityWarningModalLabel">
+                            <i class="fa-solid fa-triangle-exclamation me-2"></i>Cảnh báo bảo mật
                         </h5>
-                        <dl class="row mt-3 block-info">
-                            <dt class="col-sm-4">Block Number</dt>
-                            <dd class="col-sm-8" id="modal-block-number"></dd>
-
-                            <dt class="col-sm-4">Timestamp</dt>
-                            <dd class="col-sm-8" id="modal-timestamp"></dd>
-
-                            <dt class="col-sm-4">Transaction Hash</dt>
-                            <dd class="col-sm-8" id="modal-tx-hash"></dd>
-                        </dl>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center p-4">
+                        <i class="fa-solid fa-shield-virus fa-3x mb-3" style="color: var(--warning-color);"></i>
+                        <h6 class="fw-bold">Bạn có thể vừa quét từ một mã giả mạo hoặc không chính thức!</h6>
+                        <p class="text-muted small">
+                            Các mã QR của chúng tôi luôn có một mã bí mật, việc bạn nhìn thấy cảnh bảo này đồng nghĩa với
+                            việc
+                            mã bí mật không khớp với mã bí mật của sản phẩm gốc.
+                        </p>
+                        <p class="text-muted small">
+                            Vui lòng kiểm tra kỹ sản phẩm của bạn.
+                        </p>
+                        <div class="mt-3 p-2 rounded bg-light">
+                            <strong>Thông tin liên hệ chính thức:</strong><br>
+                            <span class="text-success fw-bold">https://truyxuat.thainguyen.gov.vn</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center border-0">
+                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Tôi đã hiểu</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 @endsection
 
 @section('js')
@@ -462,7 +520,9 @@
                 'albumLabel': "Ảnh %1 / %2"
             });
 
-
+            {!! $isAuthenticated
+                ? ''
+                : "const securityModal = new bootstrap.Modal($('#securityWarningModal')); securityModal.show();" !!}
 
             // Xử lý sự kiện cho Modal Blockchain
             const blockchainModal = $('#blockchainModal');

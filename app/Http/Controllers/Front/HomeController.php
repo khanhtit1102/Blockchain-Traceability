@@ -11,10 +11,16 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::with('createdBy')->latest()->paginate(10);
-        return view('front.homepage', compact('products'));
+        $pageMeta = [
+            'title' => 'Trang chủ',
+            'description' => '',
+            'keywords' => '',
+        ];
+        $products = Product::with('createdBy')->latest()->paginate(setting('site.paginate', 4));
+        return view('front.homepage', compact('products', 'pageMeta'));
     }
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $trace_code = $request->input('trace_code');
         if (!$trace_code) {
             return redirect()->route('home')->with('error', 'Trace code is required');
@@ -26,10 +32,14 @@ class HomeController extends Controller
         $secretParam = hash_hmac('sha256', $trace_code, config('app.trace_secret_key'));
         // Redirect to the trace page with the trace code and add parameter uid to the URL
         return redirect()->route('trace', ['trace_code' => $trace_code, 'secret' => $secretParam])->with('success', 'Product found');
-
     }
     public function trace($trace_code)
     {
+        $pageMeta = [
+            'title' => 'Trang chủ',
+            'description' => '',
+            'keywords' => '',
+        ];
         $product = Product::with('createdBy')->where('trace_code', $trace_code)->first();
         if (!$product) {
             abort(404, 'Product not found');
@@ -40,7 +50,7 @@ class HomeController extends Controller
         if (request()->input('secret') === $secretParam) {
             $isAuthenticated = true;
         }
-        return view('front.trace', compact('product', 'trace_code', 'isAuthenticated'));
+        return view('front.trace', compact('product', 'trace_code', 'isAuthenticated', 'pageMeta'));
     }
     public function downloadQR($trace_code)
     {
@@ -51,5 +61,15 @@ class HomeController extends Controller
         file_put_contents($filePath, $qrCodeImage);
 
         return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function cooperate()
+    {
+        $pageMeta = [
+            'title' => 'Hợp tác',
+            'description' => '',
+            'keywords' => '',
+        ];
+        return view('front.cooperate', compact('pageMeta'));
     }
 }
