@@ -1,0 +1,64 @@
+{
+  "Planting": {
+    "stageType": 0,
+    "example": {
+      "date": "2025-05-01",
+      "location": "Đồng Tháp",
+      "seedType": "ST25",
+      "fertilizerType": "NPK 16-16-8",
+      "fertilizerAmount": "100kg/ha",
+      "irrigationMethod": "Tưới nhỏ giọt",
+      "weather": "Nắng nhẹ",
+      "fieldManager": "Nguyễn Văn A"
+    }
+  },
+  "Harvesting": {
+    "stageType": 1,
+    "example": {
+      "harvestDate": "2025-05-20",
+      "harvestMethod": "Thủ công",
+      "toolUsed": "Kéo hái lá",
+      "workerName": "Lê Thị B",
+      "certification": "Hữu cơ - VIETGAP",
+      "harvestAmount": "2 tấn",
+      "weather": "Râm mát"
+    }
+  },
+  "Packaging": {
+    "stageType": 2,
+    "example": {
+      "packDate": "2025-05-21",
+      "packLocation": "Kho Huyện Cái Bè",
+      "unit": "Bao 50kg",
+      "hygieneStatus": "Đã kiểm định sạch",
+      "inspector": "Trần Văn C",
+      "packagingMaterial": "Bao PE",
+      "packagingBatch": "PKG-20250521"
+    }
+  },
+  "Shipping": {
+    "stageType": 3,
+    "example": {
+      "shipDate": "2025-05-22",
+      "from": "Cái Bè",
+      "to": "TP.HCM",
+      "vehicleId": "51C-12345",
+      "driverName": "Nguyễn Văn Tài",
+      "temperature": "25°C",
+      "humidity": "60%",
+      "transportMethod": "Xe tải kín"
+    }
+  },
+  "Distributing": {
+    "stageType": 4,
+    "example": {
+      "distributeDate": "2025-05-23",
+      "location": "Vinmart Quận 1",
+      "batchId": "PKG-20250521",
+      "retailer": "CTCP Vincommerce",
+      "shelfLife": "6 tháng",
+      "displayTemperature": "Dưới 28°C",
+      "certifications": ["OCOP", "ISO 22000"]
+    }
+  }
+}

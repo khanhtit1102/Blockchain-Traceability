@@ -1,0 +1,357 @@
+:root {
+    --primary-color: #00796B;
+    /* Màu xanh lá cây đậm của chè */
+    --light-primary-color: #e0f2f1;
+    --success-color: #4CAF50;
+    --dark-text: #263238;
+    --light-text: #555;
+}
+
+body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* --- STYLES CƠ BẢN (NAVBAR, PRODUCT, TABS...) --- */
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
+}
+
+.navbar-brand img {
+    max-height: 40px;
+    transition: transform 0.3s ease;
+    object-fit: cover;
+}
+
+.navbar-brand:hover img {
+    transform: scale(1.1);
+}
+
+.nav-link {
+    color: #333;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s ease;
+    margin: 0 10px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-color);
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::before,
+.nav-link.active::before {
+    width: 100%;
+}
+
+.search-form .form-control {
+    border-radius: 20px 0 0 20px;
+    border-right: none;
+}
+
+.search-form .btn {
+    border-radius: 0 20px 20px 0;
+    background-color: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+}
+
+.product-header {
+    background: white;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .07);
+}
+
+.product-main-image {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.product-gallery img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    border: 2px solid transparent;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.product-gallery img:hover,
+.product-gallery img.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 121, 107, 0.5);
+    border-color: var(--primary-color);
+}
+
+.product-info h1 {
+    font-weight: 700;
+    color: var(--dark-text);
+}
+
+.trace-code {
+    background-color: var(--light-primary-color);
+    color: var(--primary-color);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.tabs-container {
+    background: white;
+    margin-top: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .07);
+    padding: 1.5rem;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 500;
+}
+
+.nav-tabs.nav-fill .nav-link {
+    text-align: center;
+}
+
+/* Căn giữa text cho tab nav-fill */
+.nav-tabs .nav-link.active {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* --- TIMELINE CSS --- */
+.timeline {
+    position: relative;
+    padding: 2rem 0;
+    list-style: none;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    height: 100%;
+    width: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    z-index: 1;
+    border: 3px solid #f8f9fa;
+}
+
+.timeline-content {
+    margin-left: 60px;
+    background: #f1f8e9;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    border: 1px solid #dcedc8;
+}
+
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: -10px;
+    height: 0;
+    width: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #f1f8e9;
+}
+
+.timeline-content h5 {
+    font-weight: 700;
+    color: #33691e;
+}
+
+.timeline-time {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    margin-bottom: 10px;
+}
+
+.timeline-images {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.timeline-images img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.timeline-images img:hover {
+    transform: scale(1.05);
+}
+
+/* --- BLOCKCHAIN HASH & MODAL STYLES --- */
+.blockchain-hash {
+    font-size: 0.8rem;
+    font-family: 'Courier New', Courier, monospace;
+    color: #004d40;
+    margin-top: 15px;
+    background-color: #e8f5e9;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.blockchain-hash:hover {
+    background-color: #dcedc8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+}
+
+.blockchain-hash i {
+    margin-right: 8px;
+}
+
+.modal-header {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.block-info dt {
+    font-weight: 700;
+    color: var(--dark-text);
+}
+
+.block-info dd {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--light-text);
+    word-break: break-all;
+    background-color: #f5f5f5;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* --- HIỆU ỨNG TICK XÁC MINH --- */
+.verification-wrapper {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: var(--success-color);
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    margin: 10% auto;
+    box-shadow: inset 0px 0px 0px var(--success-color);
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+
+    0%,
+    100% {
+        transform: none;
+    }
+
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 30px var(--success-color);
+    }
+}
+
+/* Tùy chỉnh cho Lightbox */
+.lightbox .lb-data .lb-caption {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.tab-pane img {
+    max-width: 100%;
+    height: auto;
+}

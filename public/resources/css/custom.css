@@ -1,0 +1,230 @@
+.d-none {
+    display: none !important;
+}
+
+.uk-timeline .uk-timeline-item .uk-card {
+    max-height: 300px;
+}
+
+.uk-timeline .uk-timeline-item {
+    display: flex;
+    position: relative;
+}
+
+.uk-timeline .uk-timeline-item::before {
+    background: #dadee4;
+    content: "";
+    height: 100%;
+    left: 19px;
+    position: absolute;
+    top: 20px;
+    width: 2px;
+    z-index: -1;
+}
+
+.uk-timeline .uk-timeline-item .uk-timeline-icon .uk-badge {
+    margin-top: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+.uk-timeline .uk-timeline-item .uk-timeline-content {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 0 0 0 1rem;
+}
+
+.group-congdoan {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.uk-card-body p {
+    margin: 0;
+}
+
+.uk-card-title {
+    font-size: 21px !important;
+}
+
+.add-stage {
+    margin-right: 5px;
+}
+
+/* CSS Variables */
+:root {
+    --loader-bg: rgba(10, 25, 47, 0.85);
+    /* Nền mờ */
+    --highlight-color: #22a7f0;
+    /* Màu nhấn chính */
+    --highlight-color-faded: rgba(34, 167, 240, 0.1);
+}
+
+/* --- LOADING SCREEN COMPONENT --- */
+#blockchain-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background-color: var(--loader-bg);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    /* Sắp xếp animation và text theo cột */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+body.is-loading #blockchain-loader {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+body.is-loading {
+    overflow: hidden;
+}
+
+/* --- Animation --- */
+.chain-visualizer {
+    display: flex;
+    align-items: center;
+    height: 60px;
+}
+
+.chain-visualizer .block,
+.chain-visualizer .link {
+    animation: 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.chain-visualizer .block {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--highlight-color);
+    border-radius: 4px;
+    background-color: var(--highlight-color-faded);
+}
+
+.chain-visualizer .block.b1 {
+    animation-name: b1-pulse;
+}
+
+.chain-visualizer .block.b2 {
+    animation-name: b2-pulse;
+}
+
+.chain-visualizer .block.b3 {
+    animation-name: b3-pulse;
+}
+
+.chain-visualizer .link {
+    width: 30px;
+    height: 3px;
+    background-color: var(--highlight-color);
+    animation-name: link-draw;
+}
+
+/* --- Loading Text Styling (Mới thêm) --- */
+#loading-text-status {
+    margin-top: 25px;
+    /* Khoảng cách với animation */
+    color: var(--highlight-color);
+    font-family: 'SF Mono', 'Fira Code', 'Roboto Mono', monospace;
+    font-size: 1.1em;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+
+/* Keyframes for animations (Không đổi) */
+@keyframes b1-pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes b2-pulse {
+
+    0%,
+    25%,
+    100% {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+
+    75% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes b3-pulse {
+
+    0%,
+    50%,
+    100% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+
+    90% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes link-draw {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scaleX(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
+.inline-thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.timeline-images {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.timeline-images img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.timeline-images img:hover {
+    transform: scale(1.05);
+}
