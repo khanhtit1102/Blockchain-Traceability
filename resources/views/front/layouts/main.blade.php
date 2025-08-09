@@ -222,6 +222,21 @@
                                 class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
                 </form>
+                <div id="lang-switcher" style="cursor: pointer; font-size: 28px; margin-left: 20px;">
+                    🇺🇸
+                </div>
+                <div id="google_translate_element" style="display: block;"></div>
+                <script type="text/javascript">
+                    function googleTranslateElementInit() {
+                        new google.translate.TranslateElement({
+                        pageLanguage: 'vi',
+                        includedLanguages: 'en,vi',
+                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                        }, 'google_translate_element');
+                    }
+                </script>
+                <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
             </div>
         </div>
     </header>
@@ -381,6 +396,49 @@
             });
         });
     </script>
+    <script type="text/javascript">
+        let currentLang = 'vi';
+  let isTranslateReady = false;
+
+  // Hàm đổi ngôn ngữ khi đã sẵn sàng
+  function changeLanguage(lang) {
+    const select = document.querySelector("select.goog-te-combo");
+    if (select) {
+      select.value = lang;
+      select.dispatchEvent(new Event("change"));
+    }
+  }
+
+  // Đợi dropdown Google Translate xuất hiện thì mới cho phép đổi ngôn ngữ
+  const waitForTranslateDropdown = setInterval(() => {
+    const select = document.querySelector("select.goog-te-combo");
+    if (select) {
+      isTranslateReady = true;
+      clearInterval(waitForTranslateDropdown);
+      console.log('✅ Google Translate đã sẵn sàng');
+    }
+  }, 200); // kiểm tra mỗi 200ms
+
+  // Gán sự kiện click cho icon cờ
+  document.getElementById('lang-switcher').addEventListener('click', function () {
+    if (!isTranslateReady) {
+      alert("⏳ Vui lòng chờ Google Translate tải xong...");
+      return;
+    }
+
+    if (currentLang === 'vi') {
+      changeLanguage('en');
+      this.innerHTML = '🇻🇳';
+      currentLang = 'en';
+    } else {
+      changeLanguage('vi');
+      this.innerHTML = '🇺🇸';
+      currentLang = 'vi';
+    }
+  });
+    </script>
+
+
     @yield('js')
 </body>
 
