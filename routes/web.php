@@ -34,7 +34,10 @@ Route::get('api/stages', 'App\Http\Controllers\Api\StageController@index')
 Route::get('api/product-histories/{trace_code}', 'App\Http\Controllers\Api\ProductHistoryController@index')
     ->name('api.product-histories');
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => ['web', 'log.admin.activity'], 
+], function () {
     Voyager::routes();
 
     // Route tĩnh đặt trước
@@ -45,8 +48,4 @@ Route::group(['prefix' => 'admin'], function () {
         ->name('products.add-stages');
     Route::post('products/{id}/add-stages', 'App\Http\Controllers\Admin\ProductController@postAddStages')
         ->name('products.add-stages');
-
-    
-    // Cuối cùng là route ghi đè CRUD của Voyager
-    Route::resource('{slug}', \App\Http\Controllers\Admin\CustomVoyagerController::class);
 });
