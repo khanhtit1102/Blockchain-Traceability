@@ -24,12 +24,47 @@ class LogAdminActivity
         ];
 
         if (isset($actionMap[$method])) {
+            // Bỏ qua log cho các route đăng nhập/đăng xuất và quy trình xác thực
+            $routeName = $request->route() ? $request->route()->getName() : null;
+            $ignoredRouteNames = [
+                'login',
+                'logout',
+                'password.email',
+                'password.update',
+                'password.confirm',
+                'password.request',
+                'password.reset',
+                'two-factor.login',
+                'two-factor.challenge',
+            ];
+            $ignoredPaths = [
+                'login',
+                'logout',
+                'password/*',
+                'two-factor*',
+                'admin/login*'
+            ];
+
+            if (($routeName && in_array($routeName, $ignoredRouteNames, true)) || $request->is($ignoredPaths)) {
+                return $response; // Không ghi log cho đăng nhập/đăng xuất
+            }
+
+            // Loại bỏ các trường nhạy cảm khỏi dữ liệu log (phòng trường hợp có form chứa mật khẩu)
+            $data = $request->except(['_token', '_method']);
+            unset(
+                $data['password'],
+                $data['password_confirmation'],
+                $data['current_password'],
+                $data['new_password'],
+                $data['new_password_confirmation']
+            );
+
             activity($userName)
                 ->causedBy($user)
                 ->withProperties([
                     'url' => $request->fullUrl(),
                     'route' => $request->route() ? $request->route()->getName() : null,
-                    'data' => $request->except(['_token', '_method']),
+                    'data' => $data,
                 ])
                 ->log($actionMap[$method] . ' bản ghi');
         }
