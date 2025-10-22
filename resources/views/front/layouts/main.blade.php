@@ -405,19 +405,34 @@
             const onScanSuccess = (decodedText, decodedResult) => {
                 console.log(`Scan result: ${decodedText}`);
 
+                // Kiểm tra nếu là URL
+                function isValidUrl(str) {
+                    try {
+                        new URL(str);
+                        return true;
+                    } catch (e) {
+                        return false;
+                    }
+                }
+
+                // Lấy domain hiện tại
+                const currentDomain = window.location.hostname;
+
                 if (html5QrCode && html5QrCode.isScanning) {
                     html5QrCode.stop().then(() => {
-                        if ($activeTraceInput) {
-                            $activeTraceInput.val(decodedText);
-                            // Trigger the submit event on the form that the active input belongs to
-                            $activeTraceInput.closest('form').trigger('submit');
+                        if (isValidUrl(decodedText)) {
+                            const urlObj = new URL(decodedText);
+                            if (urlObj.hostname === currentDomain) {
+                                window.location.href = decodedText;
+                            } else {
+                                alert('QR không thuộc domain của trang này!');
+                            }
+                        } else {
+                            alert('QR không phải là một đường dẫn hợp lệ!');
                         }
                         $qrModal.modal('hide');
                     }).catch(err => {
                         console.error("Failed to stop scanning.", err);
-                        if ($activeTraceInput) {
-                            $activeTraceInput.closest('form').trigger('submit');
-                        }
                         $qrModal.modal('hide');
                     });
                 }
@@ -492,7 +507,6 @@
             } else {
                 flag.src = "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg";
                 text.innerText = "Tiếng Việt";
-
             }
             document.getElementById("langPopup").style.display = "none";
         }

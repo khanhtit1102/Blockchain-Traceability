@@ -353,8 +353,8 @@
         <!-- ========= TABS CONTAINER ========= -->
         <section class="tabs-container" data-aos="fade-up" data-aos-delay="100">
             <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation"><button class="nav-link active" id="product-tab"
-                        data-bs-toggle="tab" data-bs-target="#product-tab-pane" type="button" role="tab">Sản
+                <li class="nav-item" role="presentation"><button class="nav-link" id="product-tab" data-bs-toggle="tab"
+                        data-bs-target="#product-tab-pane" type="button" role="tab">Sản
                         phẩm</button></li>
                 <li class="nav-item" role="presentation"><button class="nav-link" id="company-tab" data-bs-toggle="tab"
                         data-bs-target="#company-tab-pane" type="button" role="tab">Nhà
@@ -362,12 +362,12 @@
                 <li class="nav-item" role="presentation"><button class="nav-link" id="certification-tab"
                         data-bs-toggle="tab" data-bs-target="#certification-tab-pane" type="button" role="tab">Chứng
                         nhận</button></li>
-                <li class="nav-item" role="presentation"><button class="nav-link" id="traceability-tab" data-bs-toggle="tab"
-                        data-bs-target="#traceability-tab-pane" type="button" role="tab">Lịch sử
+                <li class="nav-item" role="presentation"><button class="nav-link active" id="traceability-tab"
+                        data-bs-toggle="tab" data-bs-target="#traceability-tab-pane" type="button" role="tab">Lịch sử
                         sản phẩm</button></li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade p-3 show active" id="product-tab-pane" role="tabpanel">
+                <div class="tab-pane fade p-3" id="product-tab-pane" role="tabpanel">
                     {!! $product->description !!}
                 </div>
                 <div class="tab-pane fade p-3" id="company-tab-pane" role="tabpanel">
@@ -410,7 +410,7 @@
                 <div class="tab-pane fade p-3" id="certification-tab-pane" role="tabpanel">
                     {!! $product->certification_content !!}
                 </div>
-                <div class="tab-pane fade" id="traceability-tab-pane" role="tabpanel">
+                <div class="tab-pane fade show active" id="traceability-tab-pane" role="tabpanel">
                     <ul class="timeline" id="timeline-front">
 
                     </ul>
@@ -477,7 +477,7 @@
                         </p>
                         <div class="mt-3 p-2 rounded bg-light">
                             <strong>Thông tin liên hệ chính thức:</strong><br>
-                            <span class="text-success fw-bold">https://truyxuat.thainguyen.gov.vn</span>
+                            <span class="text-success fw-bold">https://tea-traceability.tech</span>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center border-0">

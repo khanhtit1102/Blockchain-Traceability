@@ -68,8 +68,10 @@ class ProductController extends \TCG\Voyager\Http\Controllers\VoyagerBaseControl
 
             $query = $model::select($dataType->name . '.*');
 
-            $query = app($dataType->model_name)::where('created_by', auth()->user()->id);
-
+            // If user is not admin
+            if (!Auth::user()->hasRole('admin')) {
+                $query = app($dataType->model_name)::where('created_by', auth()->user()->id);
+            }
 
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope' . ucfirst($dataType->scope))) {
                 $query->{$dataType->scope}();

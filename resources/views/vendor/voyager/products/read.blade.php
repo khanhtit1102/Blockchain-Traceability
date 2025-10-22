@@ -101,7 +101,8 @@
                                     <i class="glyphicon glyphicon-book"></i> Ghi nhật ký sản phẩm
                                 </a>
                                 <br>
-                                <a href="{{ route('trace', $trace_code) }}" target="_new" class="btn btn-info">
+                                <a href="{{ route('trace', $trace_code) . '?secret=' . hash_hmac('sha256', $trace_code, config('app.trace_secret_key')) }}"
+                                    target="_new" class="btn btn-info">
                                     <i class="glyphicon glyphicon-search"></i> Truy xuất nguồn gốc
                                 </a>
                             </div>
